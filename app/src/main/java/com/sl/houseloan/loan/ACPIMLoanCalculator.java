@@ -8,7 +8,7 @@ import java.util.List;
  * 等额本息还款法
  * 每月还款数额=[贷款本金×月利率×（1+月利率）^还款月数]÷[（1+月利率）^还款月数－1];
  */
-public class ACPIMLoanCalculator extends LoanCalculatorAdapter {
+public class ACPIMLoanCalculator implements ILoanCalculator {
 	/**
 	 * @param totalLoanMoney 总金额
 	 * @param totalMonth 总月数
@@ -16,50 +16,50 @@ public class ACPIMLoanCalculator extends LoanCalculatorAdapter {
 	 * @param rateType 年利率/月利率
 	 */
     @Override
-    public Loan calLoan(BigDecimal totalLoanMoney, int totalMonth, double loanRate, int rateType) {
-        Loan loan = new Loan();
-        BigDecimal loanRateMonth = rateType == LoanUtil.RATE_TYPE_YEAR ? new BigDecimal(loanRate / 100 / 12) : new BigDecimal(loanRate / 100);
+    public LoanResult calLoan(BigDecimal totalLoanMoney, int totalMonth, double loanRate, RateType rateType) {
+        LoanResult loanResult = new LoanResult();
+        BigDecimal loanRateMonth = rateType == RateType.RATE_TYPE_YEAR ? new BigDecimal(loanRate / 100 / 12) : new BigDecimal(loanRate / 100);
         BigDecimal factor = new BigDecimal(Math.pow(1 + loanRateMonth.doubleValue(), totalMonth));
         //每月还款数额=[贷款本金×月利率×（1+月利率）^还款月数]÷[（1+月利率）^还款月数－1];
         BigDecimal avgRepayment = totalLoanMoney.multiply(loanRateMonth).multiply(factor).divide(factor.subtract(new BigDecimal(1)), 2, BigDecimal.ROUND_HALF_UP);
-        loan.setLoanRate(loanRate);
-        loan.setTotalLoanMoney(totalLoanMoney);
-        loan.setTotalMonth(totalMonth);
-        loan.setAvgRepayment(avgRepayment);
-        loan.setTotalRepayment(avgRepayment.multiply(new BigDecimal(totalMonth)));
-        loan.setFirstRepayment(avgRepayment);
+        loanResult.setLoanRate(loanRate);
+        loanResult.setTotalLoanMoney(totalLoanMoney);
+        loanResult.setTotalMonth(totalMonth);
+        loanResult.setAvgRepayment(avgRepayment);
+        loanResult.setTotalRepayment(avgRepayment.multiply(new BigDecimal(totalMonth)));
+        loanResult.setFirstRepayment(avgRepayment);
 
         BigDecimal totalPayedPrincipal = new BigDecimal(0);//累积所还本金
         BigDecimal totalInterest = new BigDecimal(0); //总利息
         BigDecimal totalRepayment = new BigDecimal(0); // 已还款总数
-        List<LoanByMonth> loanByMonthList = new ArrayList<LoanByMonth>();
+        List<LoanMonthBean> loanMonthBeanList = new ArrayList<LoanMonthBean>();
         int year = 0;
         int monthInYear = 0;
         for (int i = 0; i < totalMonth; i++) {
-            LoanByMonth loanByMonth = new LoanByMonth();
+            LoanMonthBean loanMonthBean = new LoanMonthBean();
             BigDecimal remainPrincipal = totalLoanMoney.subtract(totalPayedPrincipal);
             BigDecimal interest = remainPrincipal.multiply(loanRateMonth).setScale(2, BigDecimal.ROUND_HALF_UP);
             totalInterest = totalInterest.add(interest);
-            BigDecimal principal = loan.getAvgRepayment().subtract(interest);
+            BigDecimal principal = loanResult.getAvgRepayment().subtract(interest);
             totalPayedPrincipal = totalPayedPrincipal.add(principal);
-            loanByMonth.setMonth(i + 1);
-            loanByMonth.setYear(year + 1);
-            loanByMonth.setMonthInYear(++monthInYear);
+            loanMonthBean.setMonth(i + 1);
+            loanMonthBean.setYear(year + 1);
+            loanMonthBean.setMonthInYear(++monthInYear);
             if ((i + 1) % 12 == 0) {
                 year++;
                 monthInYear = 0;
             }
-            loanByMonth.setInterest(interest);
-            loanByMonth.setPayPrincipal(principal);
-            loanByMonth.setRepayment(loan.getAvgRepayment());
-            totalRepayment = totalRepayment.add(loanByMonth.getRepayment());
-            loanByMonth.setRemainPrincipal(remainPrincipal);
-            loanByMonth.setRemainTotal(loan.getTotalRepayment().subtract(totalRepayment));
-            loanByMonthList.add(loanByMonth);
+            loanMonthBean.setInterest(interest);
+            loanMonthBean.setPayPrincipal(principal);
+            loanMonthBean.setRepayment(loanResult.getAvgRepayment());
+            totalRepayment = totalRepayment.add(loanMonthBean.getRepayment());
+            loanMonthBean.setRemainPrincipal(remainPrincipal);
+            loanMonthBean.setRemainTotal(loanResult.getTotalRepayment().subtract(totalRepayment));
+            loanMonthBeanList.add(loanMonthBean);
         }
-        loan.setTotalInterest(totalInterest);
-        loan.setAllLoans(loanByMonthList);
-        return loan;
+        loanResult.setTotalInterest(totalInterest);
+        loanResult.setAllLoans(loanMonthBeanList);
+        return loanResult;
     }
 
 }

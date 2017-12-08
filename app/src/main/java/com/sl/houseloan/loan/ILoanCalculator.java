@@ -2,9 +2,6 @@ package com.sl.houseloan.loan;
 
 import java.math.BigDecimal;
 
-/**
- * Created by WangGenshen on 1/14/16.
- */
 public interface ILoanCalculator {
 
     /**
@@ -16,6 +13,6 @@ public interface ILoanCalculator {
      * @param rateType 可选择年利率或月利率
      * @return
      */
-    public Loan calLoan(BigDecimal totalLoanMoney, int totalMonth, double loanRate, int rateType);
+    public LoanResult calLoan(BigDecimal totalLoanMoney, int totalMonth, double loanRate, RateType rateType);
 
 }

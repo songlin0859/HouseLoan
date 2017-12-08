@@ -9,10 +9,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sl.houseloan.adapter.LoanAdapter;
-import com.sl.houseloan.loan.Loan;
-import com.sl.houseloan.loan.LoanByMonth;
+import com.sl.houseloan.loan.LoanResult;
+import com.sl.houseloan.loan.LoanMonthBean;
 import com.sl.houseloan.loan.LoanCalculatorUtil;
-import com.sl.houseloan.loan.LoanUtil;
+import com.sl.houseloan.loan.RateType;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ResultActivity extends AppCompatActivity {
     public static final String TOTAL_MONTH = "totalMonth";
     public static final String LOAN_RATE = "loanRate";
     private ListView mListView;
-    private List<LoanByMonth> mMonthList=new ArrayList<>();
+    private List<LoanMonthBean> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
 
     private ProgressBar mProgressBar;
@@ -37,19 +37,18 @@ public class ResultActivity extends AppCompatActivity {
         BigDecimal totalMoney= (BigDecimal) getIntent().getSerializableExtra(TOTAL_MONEY);
         int totalMonth=getIntent().getIntExtra(TOTAL_MONTH,0);
         double loanRate=getIntent().getDoubleExtra(LOAN_RATE,0.0);
-        int rateType= LoanUtil.RATE_TYPE_YEAR;
 
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
         mListView.setAdapter(mAdapter);
         mProgressBar.setMax(totalMonth);
 
-        Loan loan = LoanCalculatorUtil.calculatorAC(totalMoney, totalMonth, loanRate, rateType);
+        LoanResult loanResult = LoanCalculatorUtil.calculatorAC(totalMoney, totalMonth, loanRate, RateType.RATE_TYPE_YEAR);
         mMonthList.clear();
-        List<LoanByMonth> allLoans = loan.getAllLoans();
+        List<LoanMonthBean> allLoans = loanResult.getAllLoans();
 
         int hasGone=0;
-        for (LoanByMonth lbm:allLoans) {
+        for (LoanMonthBean lbm:allLoans) {
             if (lbm.getDateMills()<System.currentTimeMillis()){
                 hasGone++;
             }

@@ -9,9 +9,9 @@ public class LoanCalculatorUtil {
 	 * @param totalMonth 总贷款月数
 	 * @param loanRate 贷款利率
 	 * @param rateType 利率类型(年利率/月利率)
-	 * @return Loan
+	 * @return LoanResult
 	 */
-	public static Loan calculatorACPI(BigDecimal totalLoanMoney, int totalMonth, double loanRate, int rateType){
+	public static LoanResult calculatorACPI(BigDecimal totalLoanMoney, int totalMonth, double loanRate, RateType rateType){
 		return new ACPIMLoanCalculator().calLoan(totalLoanMoney, totalMonth, loanRate, rateType);
 	}
 	/**
@@ -20,9 +20,9 @@ public class LoanCalculatorUtil {
 	 * @param totalMonth 总贷款月数
 	 * @param loanRate 贷款利率
 	 * @param rateType 利率类型(年利率/月利率)
-	 * @return Loan
+	 * @return LoanResult
 	 */
-	public static Loan calculatorAC(BigDecimal totalLoanMoney, int totalMonth, double loanRate, int rateType){
+	public static LoanResult calculatorAC(BigDecimal totalLoanMoney, int totalMonth, double loanRate, RateType rateType){
 		return new ACMLoanCalculator().calLoan(totalLoanMoney, totalMonth, loanRate, rateType);
 	}
 }

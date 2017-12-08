@@ -9,8 +9,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.sl.houseloan.loan.LoanUtil;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 

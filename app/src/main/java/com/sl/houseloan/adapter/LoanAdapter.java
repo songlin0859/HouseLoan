@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sl.houseloan.R;
-import com.sl.houseloan.loan.LoanByMonth;
+import com.sl.houseloan.loan.LoanMonthBean;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  */
 
 public class LoanAdapter extends BaseAdapter {
-    private List<LoanByMonth> mMonthList;
+    private List<LoanMonthBean> mMonthList;
 
-    public LoanAdapter(List<LoanByMonth> monthList) {
+    public LoanAdapter(List<LoanMonthBean> monthList) {
         mMonthList = monthList;
     }
 
@@ -49,7 +49,7 @@ public class LoanAdapter extends BaseAdapter {
         }else{
             viewHolder= (ViewHolder) convertView.getTag();
         }
-        LoanByMonth month = mMonthList.get(position);
+        LoanMonthBean month = mMonthList.get(position);
 
         if (month.getDateMills()<System.currentTimeMillis()){
             viewHolder.mTextView.setEnabled(false);

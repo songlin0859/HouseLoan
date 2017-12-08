@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  */
-public class Loan {
+public class LoanResult {
 
     private BigDecimal totalLoanMoney; //贷款总额
     private int totalMonth; //还款月份
@@ -16,7 +16,7 @@ public class Loan {
     private BigDecimal firstRepayment; // 首月还款额
     private BigDecimal avgRepayment; // 月均还款额
 
-    private List<LoanByMonth> allLoans; // 所有月份的还款情况
+    private List<LoanMonthBean> allLoans; // 所有月份的还款情况
 
     public BigDecimal getTotalLoanMoney() {
         return totalLoanMoney;
@@ -74,17 +74,17 @@ public class Loan {
         this.avgRepayment = avgRepayment;
     }
 
-    public List<LoanByMonth> getAllLoans() {
+    public List<LoanMonthBean> getAllLoans() {
         return allLoans;
     }
 
-    public void setAllLoans(List<LoanByMonth> allLoans) {
+    public void setAllLoans(List<LoanMonthBean> allLoans) {
         this.allLoans = allLoans;
     }
 
 	@Override
 	public String toString() {
-		return "Loan [贷款总额=" + totalLoanMoney + ", 还款月份="
+		return "LoanResult [贷款总额=" + totalLoanMoney + ", 还款月份="
 				+ String.format("%3d", totalMonth) + ", 贷款年利率=" + loanRate + ", 总利息数="
 				+ totalInterest + ", 还款总额=" + totalRepayment
 				+ ", 首月还款额=" + firstRepayment + ", 月均还款额="

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Created by WangGenshen on 1/14/16.
  */
-public class LoanByMonth {
+public class LoanMonthBean {
 
     private int month; // 第几个月份
     private String date;
