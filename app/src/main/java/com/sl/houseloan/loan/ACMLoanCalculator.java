@@ -39,18 +39,10 @@ public class ACMLoanCalculator implements ILoanCalculator {
         BigDecimal totalRepayment = new BigDecimal(0); // 已还款总数
         List<LoanMonthBean> loanMonthBeanList = new ArrayList<LoanMonthBean>();
 
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.YEAR,2016);
-        calendar.set(Calendar.MONTH,8);//一月是0，所以九月是8
-        calendar.set(Calendar.DAY_OF_MONTH,12);
-
         int year = 0;
         int monthInYear = 0;
         for (int month = 0; month < totalMonth; month++) {
             LoanMonthBean loanMonthBean = new LoanMonthBean();
-            loanMonthBean.setDate(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)/*0~11  +1-->1~12*/+"-"+calendar.get(Calendar.DAY_OF_MONTH));
-            loanMonthBean.setDateMills(calendar.getTimeInMillis());
-            calendar.add(Calendar.MONTH,1);
             loanMonthBean.setMonth(month + 1);
             loanMonthBean.setYear(year + 1);
             loanMonthBean.setMonthInYear(++monthInYear);

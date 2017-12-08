@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    Toast.makeText(getBaseContext(),year+"-"+month+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),year+"-"+(month+1)+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
                 }
             },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
