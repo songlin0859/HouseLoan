@@ -51,7 +51,7 @@ public class LoanAdapter extends BaseAdapter {
         }
         LoanMonthBean month = mMonthList.get(position);
 
-        if (month.getDateMills()<System.currentTimeMillis()){
+        if (month.getDateMills()>0&&month.getDateMills()<System.currentTimeMillis()){
             viewHolder.mTextView.setEnabled(false);
         }else{
             viewHolder.mTextView.setEnabled(true);

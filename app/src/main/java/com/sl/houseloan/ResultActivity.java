@@ -23,6 +23,7 @@ public class ResultActivity extends AppCompatActivity {
     public static final String TOTAL_MONEY = "totalMoney";
     public static final String TOTAL_MONTH = "totalMonth";
     public static final String LOAN_RATE = "loanRate";
+    public static final String TIME_MILLS = "timeMills";
     private ListView mListView;
     private List<LoanMonthBean> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
@@ -39,6 +40,7 @@ public class ResultActivity extends AppCompatActivity {
         BigDecimal totalMoney= (BigDecimal) getIntent().getSerializableExtra(TOTAL_MONEY);
         int totalMonth=getIntent().getIntExtra(TOTAL_MONTH,0);
         double loanRate=getIntent().getDoubleExtra(LOAN_RATE,0.0);
+        long timeMills=getIntent().getLongExtra(TIME_MILLS,-1);
 
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
@@ -49,19 +51,18 @@ public class ResultActivity extends AppCompatActivity {
         mMonthList.clear();
         List<LoanMonthBean> allLoans = loanResult.getAllLoans();
         //添加上月份信息
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.YEAR,2016);
-        calendar.set(Calendar.MONTH,8);//一月是0，所以九月是8
-        calendar.set(Calendar.DAY_OF_MONTH,12);
-        for (LoanMonthBean lbm:allLoans) {
-            lbm.setDate(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)/*0~11  +1-->1~12*/+"-"+calendar.get(Calendar.DAY_OF_MONTH));
-            lbm.setDateMills(calendar.getTimeInMillis());
-            calendar.add(Calendar.MONTH,1);
+        if (timeMills>0){
+            Calendar calendar=Calendar.getInstance();
+            calendar.setTimeInMillis(timeMills);
+            for (LoanMonthBean lbm:allLoans) {
+                lbm.setDate(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)/*0~11  +1-->1~12*/+"-"+calendar.get(Calendar.DAY_OF_MONTH));
+                lbm.setDateMills(calendar.getTimeInMillis());
+                calendar.add(Calendar.MONTH,1);
+            }
         }
-
         int hasGone=0;
         for (LoanMonthBean lbm:allLoans) {
-            if (lbm.getDateMills()<System.currentTimeMillis()){
+            if (lbm.getDateMills()>0&&lbm.getDateMills()<System.currentTimeMillis()){
                 hasGone++;
             }
         }
@@ -74,11 +75,12 @@ public class ResultActivity extends AppCompatActivity {
         mListView.setSelection(hasGone-1);
     }
 
-    public static void actionStart(Context context,BigDecimal totalMoney, int totalMonth, double loanRate){
+    public static void actionStart(Context context, BigDecimal totalMoney, int totalMonth, double loanRate, long timeMills){
         Intent intent=new Intent(context,ResultActivity.class);
         intent.putExtra(TOTAL_MONEY,totalMoney);
         intent.putExtra(TOTAL_MONTH,totalMonth);
         intent.putExtra(LOAN_RATE,loanRate);
+        intent.putExtra(TIME_MILLS,timeMills);
         context.startActivity(intent);
     }
 }

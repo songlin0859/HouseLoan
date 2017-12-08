@@ -2,9 +2,6 @@ package com.sl.houseloan.loan;
 
 import java.math.BigDecimal;
 
-/**
- * Created by WangGenshen on 1/14/16.
- */
 public class LoanMonthBean {
 
     private int month; // 第几个月份
@@ -85,7 +82,7 @@ public class LoanMonthBean {
 
     @Override
     public String toString() {
-        return "日期:" + date + " 总第" + String.format("%3d", month) + "月" + " 该月还款额=" + repayment
+        return (date==null?"":"日期:" + date )+ " 总第" + String.format("%3d", month) + "月" + " 该月还款额=" + repayment
                 + "\n所还本金=" + payPrincipal + ", 所还利息=" + interest
                 + "\n剩余贷款=" + remainTotal + ", 剩余总本金=" + remainPrincipal;
     }

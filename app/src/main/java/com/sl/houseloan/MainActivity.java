@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.sl.houseloan.util.SpUtil;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 
@@ -20,11 +22,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mRateDiscount;
     private Button mDateChoose;
 
+    private long timeMills=-1;
+    private Calendar mCalendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        mCalendar=Calendar.getInstance();
+        int year=SpUtil.getYear(-1);
+        int month=SpUtil.getMonth(-1);
+        int dayOfMonth=SpUtil.getDay(-1);
+        if (year!=-1&&month!=-1&&dayOfMonth!=-1){
+            mCalendar.set(Calendar.YEAR,year);
+            mCalendar.set(Calendar.MONTH,month);
+            mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            timeMills=mCalendar.getTimeInMillis();
+        }
     }
 
     private void initView() {
@@ -51,15 +67,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
 
-            ResultActivity.actionStart(this,totalMoney,totalMonth,loanRate);
+            ResultActivity.actionStart(this,totalMoney,totalMonth,loanRate,timeMills);
         }else if (v==mDateChoose){
-            Calendar calendar=Calendar.getInstance();
             DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    Toast.makeText(getBaseContext(),year+"-"+(month+1)+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
+                    mCalendar.set(Calendar.YEAR,year);
+                    mCalendar.set(Calendar.MONTH,month);
+                    mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                    SpUtil.saveYear(year);
+                    SpUtil.saveMonth(month);
+                    SpUtil.saveDay(dayOfMonth);
+                    timeMills=mCalendar.getTimeInMillis();
                 }
-            },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
         }
     }
