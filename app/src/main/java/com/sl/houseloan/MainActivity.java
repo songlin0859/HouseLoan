@@ -1,35 +1,26 @@
 package com.sl.houseloan;
 
-import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.sl.houseloan.adapter.LoanAdapter;
-import com.sl.houseloan.loan.Loan;
-import com.sl.houseloan.loan.LoanByMonth;
-import com.sl.houseloan.loan.LoanCalculatorUtil;
 import com.sl.houseloan.loan.LoanUtil;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button mStart;
     private EditText mTotalMoney;
     private EditText mTotalTime;
     private EditText mRate;
     private EditText mRateDiscount;
-    private RadioGroup mRateType;
-
-    private int rateType=LoanUtil.RATE_TYPE_YEAR;
+    private Button mDateChoose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +34,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTotalTime= (EditText) findViewById(R.id.totalTime);
         mRate= (EditText) findViewById(R.id.rate);
         mRateDiscount= (EditText) findViewById(R.id.rateDiscount);
-        mRateType= (RadioGroup) findViewById(R.id.rateType);
         mStart= (Button) findViewById(R.id.go);
+        mDateChoose= (Button) findViewById(R.id.firstPayDay);
 
         mStart.setOnClickListener(this);
-        mRateType.setOnCheckedChangeListener(this);
+        mDateChoose.setOnClickListener(this);
     }
 
     @Override
@@ -62,7 +53,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
 
-            ResultActivity.actionStart(this,totalMoney,totalMonth,loanRate,rateType);
+            ResultActivity.actionStart(this,totalMoney,totalMonth,loanRate);
+        }else if (v==mDateChoose){
+            Calendar calendar=Calendar.getInstance();
+            DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    Toast.makeText(getBaseContext(),year+"-"+month+"-"+dayOfMonth,Toast.LENGTH_SHORT).show();
+                }
+            },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.show();
         }
     }
 
@@ -86,16 +86,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return val;
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-        if (checkedId==R.id.typeYear){
-            rateType=LoanUtil.RATE_TYPE_YEAR;
-        }else if (checkedId==R.id.typeMonth){
-            rateType=LoanUtil.RATE_TYPE_MONTH;
-        }else{
-            throw new IllegalStateException("不可能吧");
-        }
     }
 }

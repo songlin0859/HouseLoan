@@ -12,6 +12,7 @@ import com.sl.houseloan.adapter.LoanAdapter;
 import com.sl.houseloan.loan.Loan;
 import com.sl.houseloan.loan.LoanByMonth;
 import com.sl.houseloan.loan.LoanCalculatorUtil;
+import com.sl.houseloan.loan.LoanUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ public class ResultActivity extends AppCompatActivity {
     public static final String TOTAL_MONEY = "totalMoney";
     public static final String TOTAL_MONTH = "totalMonth";
     public static final String LOAN_RATE = "loanRate";
-    public static final String RATE_TYPE = "rateType";
     private ListView mListView;
     private List<LoanByMonth> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
@@ -37,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
         BigDecimal totalMoney= (BigDecimal) getIntent().getSerializableExtra(TOTAL_MONEY);
         int totalMonth=getIntent().getIntExtra(TOTAL_MONTH,0);
         double loanRate=getIntent().getDoubleExtra(LOAN_RATE,0.0);
-        int rateType=getIntent().getIntExtra(RATE_TYPE,-1);
+        int rateType= LoanUtil.RATE_TYPE_YEAR;
 
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
@@ -63,12 +63,11 @@ public class ResultActivity extends AppCompatActivity {
         mListView.setSelection(hasGone-1);
     }
 
-    public static void actionStart(Context context,BigDecimal totalMoney, int totalMonth, double loanRate, int rateType){
+    public static void actionStart(Context context,BigDecimal totalMoney, int totalMonth, double loanRate){
         Intent intent=new Intent(context,ResultActivity.class);
         intent.putExtra(TOTAL_MONEY,totalMoney);
         intent.putExtra(TOTAL_MONTH,totalMonth);
         intent.putExtra(LOAN_RATE,loanRate);
-        intent.putExtra(RATE_TYPE,rateType);
         context.startActivity(intent);
     }
 }
