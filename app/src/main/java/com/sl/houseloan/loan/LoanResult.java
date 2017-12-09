@@ -15,6 +15,7 @@ public class LoanResult {
     private BigDecimal totalRepayment; // 还款总额
     private BigDecimal firstRepayment; // 首月还款额
     private BigDecimal avgRepayment; // 月均还款额
+    private BigDecimal monthDec;//每月减少
 
     private List<LoanMonthBean> allLoans; // 所有月份的还款情况
 
@@ -91,5 +92,12 @@ public class LoanResult {
 				+ avgRepayment + ", 所有月份的还款情况=" + allLoans + "]";
 	}
 
-    
+
+    public BigDecimal getMonthDec() {
+        return monthDec;
+    }
+
+    public void setMonthDec(BigDecimal monthDec) {
+        this.monthDec = monthDec;
+    }
 }

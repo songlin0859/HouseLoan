@@ -32,7 +32,8 @@ public class ACMLoanCalculator implements ILoanCalculator {
         BigDecimal payPrincipal = totalLoanMoney.divide(new BigDecimal(totalMonth), 2, BigDecimal.ROUND_HALF_UP);
         //每月减少
         BigDecimal dec = payPrincipal.multiply(loanRateMonth).setScale(2, BigDecimal.ROUND_HALF_UP);
-        System.out.println("每月减少："+dec);
+        //System.out.println("每月减少："+dec);
+        loanResult.setMonthDec(dec);
         
         BigDecimal totalPayedPrincipal = new BigDecimal(0);//累积所还本金
         BigDecimal totalInterest = new BigDecimal(0); //总利息

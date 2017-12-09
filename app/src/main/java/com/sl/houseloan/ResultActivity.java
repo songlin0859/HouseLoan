@@ -30,6 +30,7 @@ public class ResultActivity extends AppCompatActivity {
     private LoanAdapter mAdapter;
 
     private ProgressBar mProgressBar;
+    private TextView mInfoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,7 @@ public class ResultActivity extends AppCompatActivity {
         setTitle("**还款列表**");
 
         mProgressBar= (ProgressBar) findViewById(R.id.progressBar);
+        mInfoView= (TextView) findViewById(R.id.info);
         String json=getIntent().getStringExtra(EXTRA_JSON);
         if (TextUtils.isEmpty(json)){
             return;
@@ -56,7 +58,7 @@ public class ResultActivity extends AppCompatActivity {
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
         mListView.setAdapter(mAdapter);
-        mProgressBar.setMax(loanBean.getTotalLength());
+        mProgressBar.setMax(loanBean.getTotalLength()*20);
 
         LoanResult loanResult=null;
         if (loanBean.getLoanType()==LoanBean.TYPE_DEBJ){
@@ -73,8 +75,17 @@ public class ResultActivity extends AppCompatActivity {
                     RateType.RATE_TYPE_YEAR);
         }
 
-        if (loanBean==null){
+        if (loanResult==null){
             return ;
+        }
+
+        String info="贷款总额: "+loanResult.getTotalLoanMoney()+"元   总利息: "+loanResult.getTotalInterest()+"元"
+                +"\n首月还款: "+loanResult.getFirstRepayment()+"元   月均还款: "+loanResult.getAvgRepayment()+"元"
+                +"\n还款总额: "+loanResult.getTotalRepayment()+"元   每月减少: "+(loanResult.getMonthDec()==null?"0":loanResult.getMonthDec())+"元";
+        if (loanBean.getLoanType()==LoanBean.TYPE_DEBJ){
+            mInfoView.setText("**等额本金-开始还的多，逐月递减**\n"+info);
+        }else if (loanBean.getLoanType()==LoanBean.TYPE_DEBX){
+            mInfoView.setText("**等额本息-每个月还的一样的**\n"+info);
         }
 
         mMonthList.clear();
