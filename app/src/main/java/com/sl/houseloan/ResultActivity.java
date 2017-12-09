@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,17 +14,17 @@ import com.sl.houseloan.loan.LoanCalculatorUtil;
 import com.sl.houseloan.loan.LoanMonthBean;
 import com.sl.houseloan.loan.LoanResult;
 import com.sl.houseloan.loan.RateType;
+import com.sl.houseloan.util.JsonUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.sl.houseloan.R.id.totalMoney;
+
 public class ResultActivity extends AppCompatActivity {
-    public static final String TOTAL_MONEY = "totalMoney";
-    public static final String TOTAL_MONTH = "totalMonth";
-    public static final String LOAN_RATE = "loanRate";
-    public static final String TIME_MILLS = "timeMills";
+    public static final String EXTRA_JSON = "json";
     private ListView mListView;
     private List<LoanMonthBean> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
@@ -36,24 +37,44 @@ public class ResultActivity extends AppCompatActivity {
         setTitle("**还款列表**");
 
         mProgressBar= (ProgressBar) findViewById(R.id.progressBar);
+        String json=getIntent().getStringExtra(EXTRA_JSON);
+        if (TextUtils.isEmpty(json)){
+            return;
+        }
 
-        BigDecimal totalMoney= (BigDecimal) getIntent().getSerializableExtra(TOTAL_MONEY);
-        int totalMonth=getIntent().getIntExtra(TOTAL_MONTH,0);
-        double loanRate=getIntent().getDoubleExtra(LOAN_RATE,0.0);
-        long timeMills=getIntent().getLongExtra(TIME_MILLS,-1);
+        LoanBean loanBean=null;
+        try {
+            loanBean = JsonUtil.fromJson(json, LoanBean.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        if (loanBean==null){
+            return ;
+        }
 
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
         mListView.setAdapter(mAdapter);
-        mProgressBar.setMax(totalMonth);
+        mProgressBar.setMax(loanBean.getTotalLength());
 
-        LoanResult loanResult = LoanCalculatorUtil.calculatorAC(totalMoney, totalMonth, loanRate, RateType.RATE_TYPE_YEAR);
+        LoanResult loanResult=null;
+        if (loanBean.getLoanType()==LoanBean.TYPE_DEBJ){
+            loanResult = LoanCalculatorUtil.calculatorAC(new BigDecimal(loanBean.getTotalMoney()), loanBean.getTotalLength(), loanBean.getRate()*loanBean.getRateDiscount(), RateType.RATE_TYPE_YEAR);
+        }else if (loanBean.getLoanType()==LoanBean.TYPE_DEBX){
+            loanResult = LoanCalculatorUtil.calculatorACPI(new BigDecimal(loanBean.getTotalMoney()), loanBean.getTotalLength(), loanBean.getRate()*loanBean.getRateDiscount(), RateType.RATE_TYPE_YEAR);
+        }
+
+        if (loanBean==null){
+            return ;
+        }
+
         mMonthList.clear();
         List<LoanMonthBean> allLoans = loanResult.getAllLoans();
         //添加上月份信息
-        if (timeMills>0){
+        if (loanBean.getFirstPayTime()>0){
             Calendar calendar=Calendar.getInstance();
-            calendar.setTimeInMillis(timeMills);
+            calendar.setTimeInMillis(loanBean.getFirstPayTime());
             for (LoanMonthBean lbm:allLoans) {
                 lbm.setDate(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)/*0~11  +1-->1~12*/+"-"+calendar.get(Calendar.DAY_OF_MONTH));
                 lbm.setDateMills(calendar.getTimeInMillis());
@@ -67,7 +88,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
         mProgressBar.setProgress(hasGone);
-        ((TextView)findViewById(R.id.text)).setText("已还款比例(月数)"+hasGone+"/"+totalMonth);
+        ((TextView)findViewById(R.id.text)).setText("已还款比例(月数)"+hasGone+"/"+loanBean.getTotalLength());
 
         mMonthList.addAll(allLoans);
         mAdapter.notifyDataSetChanged();
@@ -75,12 +96,9 @@ public class ResultActivity extends AppCompatActivity {
         mListView.setSelection(hasGone-1);
     }
 
-    public static void actionStart(Context context, BigDecimal totalMoney, int totalMonth, double loanRate, long timeMills){
+    public static void actionStart(Context context, String json){
         Intent intent=new Intent(context,ResultActivity.class);
-        intent.putExtra(TOTAL_MONEY,totalMoney);
-        intent.putExtra(TOTAL_MONTH,totalMonth);
-        intent.putExtra(LOAN_RATE,loanRate);
-        intent.putExtra(TIME_MILLS,timeMills);
+        intent.putExtra(EXTRA_JSON,json);
         context.startActivity(intent);
     }
 }

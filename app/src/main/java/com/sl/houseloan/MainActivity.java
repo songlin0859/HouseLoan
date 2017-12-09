@@ -7,23 +7,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.sl.houseloan.util.JsonUtil;
 import com.sl.houseloan.util.SpUtil;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private Button mStart;
     private EditText mTotalMoney;
     private EditText mTotalTime;
     private EditText mRate;
     private EditText mRateDiscount;
     private Button mDateChoose;
+    private RadioGroup mRadioGroup;
 
-    private long timeMills=-1;
     private Calendar mCalendar;
+    private LoanBean mLoanBean=new LoanBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mCalendar.set(Calendar.YEAR,year);
             mCalendar.set(Calendar.MONTH,month);
             mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-            timeMills=mCalendar.getTimeInMillis();
         }
     }
 
@@ -50,24 +52,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRateDiscount= (EditText) findViewById(R.id.rateDiscount);
         mStart= (Button) findViewById(R.id.go);
         mDateChoose= (Button) findViewById(R.id.firstPayDay);
+        mRadioGroup= (RadioGroup) findViewById(R.id.radioGroup);
 
         mStart.setOnClickListener(this);
         mDateChoose.setOnClickListener(this);
+        mRadioGroup.setOnCheckedChangeListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v==mStart){
-            BigDecimal totalMoney=new BigDecimal(getDoubleValue(mTotalMoney));
-            int totalMonth=getIntValue(mTotalTime)*12;
-            double loanRate =getDoubleValue(mRate)*getDoubleValue(mRateDiscount);
-
-            if (totalMonth*loanRate==0){
-                Toast.makeText(this,"参数非法",Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            ResultActivity.actionStart(this,totalMoney,totalMonth,loanRate,timeMills);
+            mLoanBean.setTotalMoney(getDoubleValue(mTotalMoney));
+            mLoanBean.setTotalLength(getIntValue(mTotalTime)*12);
+            mLoanBean.setRate(getDoubleValue(mRate));
+            mLoanBean.setRateDiscount(getDoubleValue(mRateDiscount));
+            ResultActivity.actionStart(this, JsonUtil.toJson(mLoanBean));
         }else if (v==mDateChoose){
             DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SpUtil.saveYear(year);
                     SpUtil.saveMonth(month);
                     SpUtil.saveDay(dayOfMonth);
-                    timeMills=mCalendar.getTimeInMillis();
+                    mLoanBean.setFirstPayTime(mCalendar.getTimeInMillis());
                 }
             },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
@@ -105,5 +104,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return val;
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+        if (checkedId==R.id.debj){
+            mLoanBean.setLoanType(LoanBean.TYPE_DEBJ);
+        }else if (checkedId==R.id.debx){
+            mLoanBean.setLoanType(LoanBean.TYPE_DEBX);
+        }
     }
 }

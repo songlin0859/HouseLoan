@@ -1,118 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    android:orientation="vertical"
-    tools:context="com.sl.houseloan.MainActivity">
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:layout_height="wrap_content"
-            android:text="总额:"
-            />
-        <EditText
-            android:id="@+id/totalMoney"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:text="390000"
-            android:hint="输入金额"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:layout_height="wrap_content"
-            android:text="期限:"
-            />
-        <EditText
-            android:id="@+id/totalTime"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:text="20"
-            android:hint="期限(年)"
-            />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        tools:context="com.sl.houseloan.MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="贷款总额:"
+                />
+
+            <EditText
+                android:id="@+id/totalMoney"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="输入金额(元)"
+                android:inputType="numberDecimal"
+                android:text="390000"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="还款期限:"
+                />
+
+            <EditText
+                android:id="@+id/totalTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="期限(年)"
+                android:inputType="number"
+                android:text="20"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="贷款利率:"
+                />
+
+            <EditText
+                android:id="@+id/rate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="输入年利率"
+                android:inputType="numberDecimal"
+                android:text="4.9"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:text="利率倍率:"
+                />
+
+            <EditText
+                android:id="@+id/rateDiscount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="输入利率倍率"
+                android:inputType="numberDecimal"
+                android:text="0.9"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <RadioButton
+                android:id="@+id/debj"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="等额本金"
+                />
+
+            <RadioButton
+                android:id="@+id/debx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="等额本息"
+                />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/firstPayDay"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:gravity="right|center_vertical"
             android:layout_height="wrap_content"
-            android:text="利率:"
+            android:text="首次还款日"
             />
-        <EditText
-            android:id="@+id/rate"
-            android:layout_width="0dp"
-            android:layout_weight="4"
+        </LinearLayout>
+        <Button
+            android:id="@+id/go"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:text="4.9"
-            android:hint="输入利率"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:layout_height="wrap_content"
-            android:text="利率倍率:"
-            />
-        <EditText
-            android:id="@+id/rateDiscount"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:text="0.9"
-            android:hint="输入利率倍率"
+            android:layout_margin="10dp"
+            android:background="@color/colorAccent"
+            android:text="开始计算"
             />
     </LinearLayout>
-    <Button
-        android:id="@+id/firstPayDay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="点击选择首次还款日期"
-        />
-    <Button
-        android:id="@+id/go"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_margin="10dp"
-        android:text="开始计算"
-        />
-</LinearLayout>
+</ScrollView>
