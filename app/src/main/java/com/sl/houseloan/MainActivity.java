@@ -3,20 +3,25 @@ package com.sl.houseloan;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sl.houseloan.util.JsonUtil;
+import com.sl.houseloan.util.MoneyConvertor;
 import com.sl.houseloan.util.SpUtil;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private Button mStart;
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText mRateDiscount;
     private Button mDateChoose;
     private RadioGroup mRadioGroup;
+    private TextView mMoneyInfo;
 
     private Calendar mCalendar;
     private LoanBean mLoanBean;
@@ -75,10 +81,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mStart= (Button) findViewById(R.id.go);
         mDateChoose= (Button) findViewById(R.id.firstPayDay);
         mRadioGroup= (RadioGroup) findViewById(R.id.radioGroup);
+        mMoneyInfo= (TextView) findViewById(R.id.moneyInfo);
+        mMoneyInfo.setVisibility(View.GONE);
 
         mStart.setOnClickListener(this);
         mDateChoose.setOnClickListener(this);
         mRadioGroup.setOnCheckedChangeListener(this);
+
+        mTotalMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(editable)){
+                    mMoneyInfo.setVisibility(View.GONE);
+                }else{
+                    mMoneyInfo.setVisibility(View.VISIBLE);
+                    try {
+                        mMoneyInfo.setText(MoneyConvertor.convert(editable.toString()));
+                    }catch (Exception ignor){
+                        //
+                    }
+                }
+            }
+        });
     }
 
     @Override
