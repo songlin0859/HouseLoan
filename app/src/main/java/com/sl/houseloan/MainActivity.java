@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mLoanBean.getRateDiscount()>0){
             mRateDiscount.setText(String.valueOf(mLoanBean.getRateDiscount()));
         }
+
+        if (mLoanBean.getLoanType()==LoanBean.TYPE_DEBX){
+            ((RadioButton)findViewById(R.id.debx)).setChecked(true);
+        }else if (mLoanBean.getLoanType()==LoanBean.TYPE_DEBJ){
+            ((RadioButton)findViewById(R.id.debj)).setChecked(true);
+        }else{
+            ((RadioButton)findViewById(R.id.debj)).setChecked(true);
+            mLoanBean.setLoanType(LoanBean.TYPE_DEBJ);
+        }
     }
 
     private void initView() {
@@ -76,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v==mStart){
             if (checkData()){
                 mLoanBean.setTotalMoney(getDoubleValue(mTotalMoney));
-                mLoanBean.setTotalLength(getIntValue(mTotalTime)*12);
+                mLoanBean.setTotalLength(getIntValue(mTotalTime));
                 mLoanBean.setRate(getDoubleValue(mRate));
                 mLoanBean.setRateDiscount(getDoubleValue(mRateDiscount));
                 SpUtil.saveLoanInfo(mLoanBean);

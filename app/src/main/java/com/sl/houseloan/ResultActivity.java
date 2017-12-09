@@ -60,9 +60,17 @@ public class ResultActivity extends AppCompatActivity {
 
         LoanResult loanResult=null;
         if (loanBean.getLoanType()==LoanBean.TYPE_DEBJ){
-            loanResult = LoanCalculatorUtil.calculatorAC(new BigDecimal(loanBean.getTotalMoney()), loanBean.getTotalLength(), loanBean.getRate()*loanBean.getRateDiscount(), RateType.RATE_TYPE_YEAR);
+            loanResult = LoanCalculatorUtil.calculatorAC(
+                    new BigDecimal(loanBean.getTotalMoney()),
+                    loanBean.getTotalLength()*12,
+                    loanBean.getRate()*loanBean.getRateDiscount(),
+                    RateType.RATE_TYPE_YEAR);
         }else if (loanBean.getLoanType()==LoanBean.TYPE_DEBX){
-            loanResult = LoanCalculatorUtil.calculatorACPI(new BigDecimal(loanBean.getTotalMoney()), loanBean.getTotalLength(), loanBean.getRate()*loanBean.getRateDiscount(), RateType.RATE_TYPE_YEAR);
+            loanResult = LoanCalculatorUtil.calculatorACPI(
+                    new BigDecimal(loanBean.getTotalMoney()),
+                    loanBean.getTotalLength()*12,
+                    loanBean.getRate()*loanBean.getRateDiscount(),
+                    RateType.RATE_TYPE_YEAR);
         }
 
         if (loanBean==null){
@@ -88,7 +96,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         }
         mProgressBar.setProgress(hasGone);
-        ((TextView)findViewById(R.id.text)).setText("已还款比例(月数)"+hasGone+"/"+loanBean.getTotalLength());
+        ((TextView)findViewById(R.id.text)).setText("已还款比例(月数)"+hasGone+"/"+loanBean.getTotalLength()*12);
 
         mMonthList.addAll(allLoans);
         mAdapter.notifyDataSetChanged();
