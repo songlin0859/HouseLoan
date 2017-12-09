@@ -11,10 +11,22 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    signingConfigs {//签名配置
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file(STORE_FILE)
+            storePassword KEYSTORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+            buildConfigField("boolean", "ENABLE_DEBUG", "true")//正式版测试版配置区别
+        }
+        release {
+            signingConfig signingConfigs.release
+            buildConfigField("boolean", "ENABLE_DEBUG", "false")
         }
     }
 }
