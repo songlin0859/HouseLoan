@@ -3,15 +3,15 @@ package com.sl.houseloan.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sl.houseloan.LoanBean;
+
 /**
  * SharedPreferencs
  * Created by csl on 2017/12/8.
  */
 
 public class SpUtil {
-    private static final String YEAR = "year";
-    private static final String MONTH = "month";
-    private static final String DAY = "day";
+    private static final String LOAN_INFO = "loan_info";
     private static Context sContext;
     private static SharedPreferences sSP;
     public static void init(Context context){
@@ -19,36 +19,22 @@ public class SpUtil {
         sSP=sContext.getSharedPreferences("sp",Context.MODE_PRIVATE);
     }
 
-    private static void putInt(String key,int value){
-        sSP.edit().putInt(key,value).apply();
+    private static void putString(String key,String value){
+        sSP.edit().putString(key,value).apply();
     }
 
-    private static void putFloat(String key,float value){
-        sSP.edit().putFloat(key,value).apply();
+    /*--------------------------*/
+    public static void saveLoanInfo(LoanBean loanBean){
+        putString(LOAN_INFO,JsonUtil.toJson(loanBean));
     }
 
-    private static void putLong(String key,long value){
-        sSP.edit().putLong(key,value).apply();
-    }
-    /*----------------------------------*/
-    public static void saveYear(int year){
-        putInt(YEAR,year);
-    }
-    public static int getYear(int defaultValue){
-        return sSP.getInt(YEAR,defaultValue);
-    }
-
-    public static void saveMonth(int month){
-        putInt(MONTH,month);
-    }
-    public static int getMonth(int defaultValue){
-        return sSP.getInt(MONTH,defaultValue);
-    }
-
-    public static void saveDay(int day){
-        putInt(DAY,day);
-    }
-    public static int getDay(int defaultValue){
-        return sSP.getInt(DAY,defaultValue);
+    public static LoanBean getLoanInfo(){
+        try {
+            LoanBean loanBean = JsonUtil.fromJson(sSP.getString(LOAN_INFO, ""), LoanBean.class);
+            return loanBean==null?new LoanBean():loanBean;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new LoanBean();
     }
 }

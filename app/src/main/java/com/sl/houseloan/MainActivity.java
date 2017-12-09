@@ -3,6 +3,7 @@ package com.sl.houseloan;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,22 +27,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RadioGroup mRadioGroup;
 
     private Calendar mCalendar;
-    private LoanBean mLoanBean=new LoanBean();
+    private LoanBean mLoanBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-
+        mLoanBean=SpUtil.getLoanInfo();
         mCalendar=Calendar.getInstance();
-        int year=SpUtil.getYear(-1);
-        int month=SpUtil.getMonth(-1);
-        int dayOfMonth=SpUtil.getDay(-1);
-        if (year!=-1&&month!=-1&&dayOfMonth!=-1){
-            mCalendar.set(Calendar.YEAR,year);
-            mCalendar.set(Calendar.MONTH,month);
-            mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+        if (mLoanBean.getFirstPayTime()>0){
+            mCalendar.setTimeInMillis(mLoanBean.getFirstPayTime());
+        }
+        initShowView();
+    }
+
+    private void initShowView() {
+        if (mLoanBean.getTotalMoney()>0){
+            mTotalMoney.setText(String.valueOf(mLoanBean.getTotalMoney()));
+        }
+        if (mLoanBean.getTotalLength()>0){
+            mTotalTime.setText(String.valueOf(mLoanBean.getTotalLength()));
+        }
+        if (mLoanBean.getRate()>0){
+            mRate.setText(String.valueOf(mLoanBean.getRate()));
+        }
+        if (mLoanBean.getRateDiscount()>0){
+            mRateDiscount.setText(String.valueOf(mLoanBean.getRateDiscount()));
         }
     }
 
@@ -62,11 +74,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v==mStart){
-            mLoanBean.setTotalMoney(getDoubleValue(mTotalMoney));
-            mLoanBean.setTotalLength(getIntValue(mTotalTime)*12);
-            mLoanBean.setRate(getDoubleValue(mRate));
-            mLoanBean.setRateDiscount(getDoubleValue(mRateDiscount));
-            ResultActivity.actionStart(this, JsonUtil.toJson(mLoanBean));
+            if (checkData()){
+                mLoanBean.setTotalMoney(getDoubleValue(mTotalMoney));
+                mLoanBean.setTotalLength(getIntValue(mTotalTime)*12);
+                mLoanBean.setRate(getDoubleValue(mRate));
+                mLoanBean.setRateDiscount(getDoubleValue(mRateDiscount));
+                SpUtil.saveLoanInfo(mLoanBean);
+                ResultActivity.actionStart(this, JsonUtil.toJson(mLoanBean));
+            }
         }else if (v==mDateChoose){
             DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -74,14 +89,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mCalendar.set(Calendar.YEAR,year);
                     mCalendar.set(Calendar.MONTH,month);
                     mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                    SpUtil.saveYear(year);
-                    SpUtil.saveMonth(month);
-                    SpUtil.saveDay(dayOfMonth);
                     mLoanBean.setFirstPayTime(mCalendar.getTimeInMillis());
                 }
             },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
         }
+    }
+
+    private boolean checkData() {
+        if (TextUtils.isEmpty(mTotalMoney.getText())){
+            Toast.makeText(this,"请输入贷款总额",Toast.LENGTH_SHORT);
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mTotalTime.getText())){
+            Toast.makeText(this,"请输入还款期限",Toast.LENGTH_SHORT);
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mRate.getText())){
+            Toast.makeText(this,"请输入贷款利率",Toast.LENGTH_SHORT);
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mRateDiscount.getText())){
+            Toast.makeText(this,"请输入利率倍率",Toast.LENGTH_SHORT);
+            return false;
+        }
+
+        return true;
     }
 
     private int getIntValue(EditText editText){
