@@ -142,22 +142,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean checkData() {
         if (TextUtils.isEmpty(mTotalMoney.getText())){
-            Toast.makeText(this,"请输入贷款总额",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"请输入贷款总额",Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mTotalTime.getText())){
-            Toast.makeText(this,"请输入还款期限",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"请输入还款期限",Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mRate.getText())){
-            Toast.makeText(this,"请输入贷款利率",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"请输入贷款利率",Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mRateDiscount.getText())){
-            Toast.makeText(this,"请输入利率倍率",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"请输入利率倍率",Toast.LENGTH_SHORT).show();
             return false;
         }
 
