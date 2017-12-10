@@ -20,7 +20,9 @@ import com.sl.houseloan.util.MoneyConvertor;
 import com.sl.houseloan.util.SpUtil;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initShowView() {
         if (mLoanBean.getTotalMoney()>0){
             mTotalMoney.setText(String.valueOf(mLoanBean.getTotalMoney()));
+            mTotalMoney.setSelection(String.valueOf(mLoanBean.getTotalMoney()).length());
         }
         if (mLoanBean.getTotalLength()>0){
             mTotalTime.setText(String.valueOf(mLoanBean.getTotalLength()));
@@ -70,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             ((RadioButton)findViewById(R.id.debj)).setChecked(true);
             mLoanBean.setLoanType(LoanBean.TYPE_DEBJ);
+        }
+
+        if (mLoanBean.getFirstPayTime()>0){
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
+            mDateChoose.setText(sdf.format(new Date(mLoanBean.getFirstPayTime())));
         }
     }
 
@@ -134,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mCalendar.set(Calendar.MONTH,month);
                     mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
                     mLoanBean.setFirstPayTime(mCalendar.getTimeInMillis());
+                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
+                    mDateChoose.setText(sdf.format(new Date(mLoanBean.getFirstPayTime())));
                 }
             },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
