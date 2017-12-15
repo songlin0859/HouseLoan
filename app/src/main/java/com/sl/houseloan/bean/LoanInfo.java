@@ -1,10 +1,10 @@
-package com.sl.houseloan;
+package com.sl.houseloan.bean;
 
 /**
  * Created by 36128 on 2017/12/9.
  */
 
-public class LoanBean {
+public class LoanInfo {
     public static final int TYPE_DEBJ = 0;
     public static final int TYPE_DEBX = 1;
     private double totalMoney;

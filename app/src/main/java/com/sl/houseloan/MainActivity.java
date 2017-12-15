@@ -15,15 +15,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sl.houseloan.bean.LoanInfo;
 import com.sl.houseloan.util.JsonUtil;
 import com.sl.houseloan.util.MoneyConvertor;
 import com.sl.houseloan.util.SpUtil;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private Button mStart;
@@ -36,48 +35,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mMoneyInfo;
 
     private Calendar mCalendar;
-    private LoanBean mLoanBean;
+    private LoanInfo mLoanInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        mLoanBean=SpUtil.getLoanInfo();
+        mLoanInfo =SpUtil.getLoanInfo();
         mCalendar=Calendar.getInstance();
-        if (mLoanBean.getFirstPayTime()>0){
-            mCalendar.setTimeInMillis(mLoanBean.getFirstPayTime());
+        if (mLoanInfo.getFirstPayTime()>0){
+            mCalendar.setTimeInMillis(mLoanInfo.getFirstPayTime());
         }
         initShowView();
     }
 
     private void initShowView() {
-        if (mLoanBean.getTotalMoney()>0){
-            mTotalMoney.setText(String.valueOf(mLoanBean.getTotalMoney()));
-            mTotalMoney.setSelection(String.valueOf(mLoanBean.getTotalMoney()).length());
+        if (mLoanInfo.getTotalMoney()>0){
+            mTotalMoney.setText(String.valueOf(mLoanInfo.getTotalMoney()));
+            mTotalMoney.setSelection(String.valueOf(mLoanInfo.getTotalMoney()).length());
         }
-        if (mLoanBean.getTotalLength()>0){
-            mTotalTime.setText(String.valueOf(mLoanBean.getTotalLength()));
+        if (mLoanInfo.getTotalLength()>0){
+            mTotalTime.setText(String.valueOf(mLoanInfo.getTotalLength()));
         }
-        if (mLoanBean.getRate()>0){
-            mRate.setText(String.valueOf(mLoanBean.getRate()));
+        if (mLoanInfo.getRate()>0){
+            mRate.setText(String.valueOf(mLoanInfo.getRate()));
         }
-        if (mLoanBean.getRateDiscount()>0){
-            mRateDiscount.setText(String.valueOf(mLoanBean.getRateDiscount()));
+        if (mLoanInfo.getRateDiscount()>0){
+            mRateDiscount.setText(String.valueOf(mLoanInfo.getRateDiscount()));
         }
 
-        if (mLoanBean.getLoanType()==LoanBean.TYPE_DEBX){
+        if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBX){
             ((RadioButton)findViewById(R.id.debx)).setChecked(true);
-        }else if (mLoanBean.getLoanType()==LoanBean.TYPE_DEBJ){
+        }else if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
             ((RadioButton)findViewById(R.id.debj)).setChecked(true);
         }else{
             ((RadioButton)findViewById(R.id.debj)).setChecked(true);
-            mLoanBean.setLoanType(LoanBean.TYPE_DEBJ);
+            mLoanInfo.setLoanType(LoanInfo.TYPE_DEBJ);
         }
 
-        if (mLoanBean.getFirstPayTime()>0){
-            SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
-            mDateChoose.setText(sdf.format(new Date(mLoanBean.getFirstPayTime())));
+        if (mLoanInfo.getFirstPayTime()>0){
+            SimpleDateFormat sdf=new SimpleDateFormat(getString(R.string.activity_main_date_format));
+            mDateChoose.setText(sdf.format(new Date(mLoanInfo.getFirstPayTime())));
         }
     }
 
@@ -127,12 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v==mStart){
             if (checkData()){
-                mLoanBean.setTotalMoney(getDoubleValue(mTotalMoney));
-                mLoanBean.setTotalLength(getIntValue(mTotalTime));
-                mLoanBean.setRate(getDoubleValue(mRate));
-                mLoanBean.setRateDiscount(getDoubleValue(mRateDiscount));
-                SpUtil.saveLoanInfo(mLoanBean);
-                ResultActivity.actionStart(this, JsonUtil.toJson(mLoanBean));
+                mLoanInfo.setTotalMoney(getDoubleValue(mTotalMoney));
+                mLoanInfo.setTotalLength(getIntValue(mTotalTime));
+                mLoanInfo.setRate(getDoubleValue(mRate));
+                mLoanInfo.setRateDiscount(getDoubleValue(mRateDiscount));
+                SpUtil.saveLoanInfo(mLoanInfo);
+                ResultActivity.actionStart(this, JsonUtil.toJson(mLoanInfo));
             }
         }else if (v==mDateChoose){
             DatePickerDialog dialog=new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -141,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mCalendar.set(Calendar.YEAR,year);
                     mCalendar.set(Calendar.MONTH,month);
                     mCalendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                    mLoanBean.setFirstPayTime(mCalendar.getTimeInMillis());
-                    SimpleDateFormat sdf=new SimpleDateFormat("yyyy年MM月dd日");
-                    mDateChoose.setText(sdf.format(new Date(mLoanBean.getFirstPayTime())));
+                    mLoanInfo.setFirstPayTime(mCalendar.getTimeInMillis());
+                    SimpleDateFormat sdf=new SimpleDateFormat(getString(R.string.activity_main_date_format));
+                    mDateChoose.setText(sdf.format(new Date(mLoanInfo.getFirstPayTime())));
                 }
             },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
@@ -152,22 +151,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean checkData() {
         if (TextUtils.isEmpty(mTotalMoney.getText())){
-            Toast.makeText(this,"请输入贷款总额",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.activity_main_input_total_money_toast,Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mTotalTime.getText())){
-            Toast.makeText(this,"请输入还款期限",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.activity_main_input_total_time_toast,Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mRate.getText())){
-            Toast.makeText(this,"请输入贷款利率",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.activity_main_input_rate_toast,Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (TextUtils.isEmpty(mRateDiscount.getText())){
-            Toast.makeText(this,"请输入利率倍率",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.activity_main_input_rate_discount_toast,Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -199,9 +198,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
         if (checkedId==R.id.debj){
-            mLoanBean.setLoanType(LoanBean.TYPE_DEBJ);
+            mLoanInfo.setLoanType(LoanInfo.TYPE_DEBJ);
         }else if (checkedId==R.id.debx){
-            mLoanBean.setLoanType(LoanBean.TYPE_DEBX);
+            mLoanInfo.setLoanType(LoanInfo.TYPE_DEBX);
         }
     }
 }

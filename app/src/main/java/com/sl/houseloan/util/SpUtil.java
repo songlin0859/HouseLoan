@@ -3,7 +3,7 @@ package com.sl.houseloan.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.sl.houseloan.LoanBean;
+import com.sl.houseloan.bean.LoanInfo;
 
 /**
  * SharedPreferencs
@@ -24,17 +24,17 @@ public class SpUtil {
     }
 
     /*--------------------------*/
-    public static void saveLoanInfo(LoanBean loanBean){
-        putString(LOAN_INFO,JsonUtil.toJson(loanBean));
+    public static void saveLoanInfo(LoanInfo loanInfo){
+        putString(LOAN_INFO,JsonUtil.toJson(loanInfo));
     }
 
-    public static LoanBean getLoanInfo(){
+    public static LoanInfo getLoanInfo(){
         try {
-            LoanBean loanBean = JsonUtil.fromJson(sSP.getString(LOAN_INFO, ""), LoanBean.class);
-            return loanBean==null?new LoanBean():loanBean;
+            LoanInfo loanInfo = JsonUtil.fromJson(sSP.getString(LOAN_INFO, ""), LoanInfo.class);
+            return loanInfo ==null?new LoanInfo(): loanInfo;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return new LoanBean();
+        return new LoanInfo();
     }
 }

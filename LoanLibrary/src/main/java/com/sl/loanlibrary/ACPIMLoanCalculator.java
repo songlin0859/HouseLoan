@@ -1,4 +1,4 @@
-package com.sl.houseloan.loan;
+package com.sl.loanlibrary;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

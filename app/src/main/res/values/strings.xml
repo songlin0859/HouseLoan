@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">月供清单</string>
+    <string name="activity_slpash_copyright">阿菜©csl</string>
+    <string name="activity_main_total_money">贷款总额:</string>
+    <string name="activity_main_hint_input_money">输入金额(元)</string>
+    <string name="activity_main_start">开始计算</string>
+    <string name="activity_main_debx">等额本息</string>
+    <string name="activity_main_debj">等额本金</string>
+    <string name="activity_main_set_first_pay_date">设置首次还款日期</string>
+    <string name="activity_main_set_first_pay_date_text">首次还款日:</string>
+    <string name="activity_main_input_rate_discount_hint">输入利率倍率，没有折扣输入1</string>
+    <string name="activity_main_input_rate_discount">利率倍率:</string>
+    <string name="activity_main_input_rate_hint">输入年利率，比如4.9</string>
+    <string name="activity_main_input_rate">贷款利率:</string>
+    <string name="activity_main_input_total_time">还款期限:</string>
+    <string name="activity_main_input_total_time_hint">期限(年)</string>
+    <string name="activity_main_date_format">yyyy年MM月dd日</string>
+    <string name="activity_main_input_total_money_toast">请输入贷款总额</string>
+    <string name="activity_main_input_total_time_toast">请输入还款期限</string>
+    <string name="activity_main_input_rate_toast">请输入贷款利率</string>
+    <string name="activity_main_input_rate_discount_toast">请输入利率倍率</string>
+    <string name="activity_result_title">还款列表</string>
 </resources>

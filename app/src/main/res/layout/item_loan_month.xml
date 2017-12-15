@@ -15,7 +15,7 @@
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="left|center_vertical"
+            android:gravity="start|center_vertical"
             android:padding="5dp"
             />
     </android.support.v7.widget.CardView>

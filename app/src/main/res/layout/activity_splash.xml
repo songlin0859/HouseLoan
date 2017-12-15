@@ -18,6 +18,6 @@
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:textStyle="bold|italic"
-        android:text="阿菜©csl"
+        android:text="@string/activity_slpash_copyright"
         />
 </FrameLayout>

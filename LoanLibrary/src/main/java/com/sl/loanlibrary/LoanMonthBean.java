@@ -1,4 +1,4 @@
-package com.sl.houseloan.loan;
+package com.sl.loanlibrary;
 
 import java.math.BigDecimal;
 
@@ -79,14 +79,6 @@ public class LoanMonthBean {
     public void setMonthInYear(int monthInYear) {
         this.monthInYear = monthInYear;
     }
-
-    @Override
-    public String toString() {
-        return (date==null?"":"日期:" + date )+ " 总第" + String.format("%3d", month) + "月" + " 该月还款额=" + repayment
-                + "\n所还本金=" + payPrincipal + ", 所还利息=" + interest
-                + "\n剩余贷款=" + remainTotal + ", 剩余总本金=" + remainPrincipal;
-    }
-
 
     public String getDate() {
         return date;

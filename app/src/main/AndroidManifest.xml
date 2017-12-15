@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.sl.houseloan">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -20,6 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="457774bbaa24ccbdc9400ec23d15140cb8f3ab2f" />
     </application>
-
 </manifest>

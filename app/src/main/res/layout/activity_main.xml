@@ -7,9 +7,9 @@
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp"
+        android:padding="@dimen/mid_padding"
         tools:context="com.sl.houseloan.MainActivity">
 
         <LinearLayout
@@ -23,8 +23,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="贷款总额:"
+                android:gravity="end|center_vertical"
+                android:text="@string/activity_main_total_money"
                 />
 
             <EditText
@@ -32,14 +32,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:hint="输入金额(元)"
+                android:hint="@string/activity_main_hint_input_money"
                 android:inputType="numberDecimal"
                 />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="5"
             android:orientation="horizontal"
             >
             <View
@@ -66,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right|center_vertical"
-                android:text="还款期限:"
+                android:text="@string/activity_main_input_total_time"
                 />
 
             <EditText
@@ -74,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:hint="期限(年)"
+                android:hint="@string/activity_main_input_total_time_hint"
                 android:inputType="number"
                 />
         </LinearLayout>
@@ -90,8 +89,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="贷款利率:"
+                android:gravity="end|center_vertical"
+                android:text="@string/activity_main_input_rate"
                 />
 
             <EditText
@@ -99,7 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:hint="输入年利率，比如4.9"
+                android:hint="@string/activity_main_input_rate_hint"
                 android:inputType="numberDecimal"
                 />
         </LinearLayout>
@@ -115,8 +114,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="利率倍率:"
+                android:gravity="end|center_vertical"
+                android:text="@string/activity_main_input_rate_discount"
                 />
 
             <EditText
@@ -124,7 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:hint="输入利率倍率，没有折扣输入1"
+                android:hint="@string/activity_main_input_rate_discount_hint"
                 android:inputType="numberDecimal"
                 />
         </LinearLayout>
@@ -139,8 +138,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:text="首次还款日:"
+                android:gravity="end|center_vertical"
+                android:text="@string/activity_main_set_first_pay_date_text"
                 />
 
             <Button
@@ -148,8 +147,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="设置首次还款日期"
-                android:inputType="numberDecimal"
+                android:text="@string/activity_main_set_first_pay_date"
                 />
         </LinearLayout>
         <RadioGroup
@@ -166,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="等额本金"
+                android:text="@string/activity_main_debj"
                 />
 
             <RadioButton
@@ -174,7 +172,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="等额本息"
+                android:text="@string/activity_main_debx"
                 />
         </RadioGroup>
         <Button
@@ -183,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/colorAccent"
-            android:text="开始计算"
+            android:text="@string/activity_main_start"
             />
     </LinearLayout>
 </ScrollView>

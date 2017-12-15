@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sl.houseloan.R;
-import com.sl.houseloan.loan.LoanMonthBean;
+import com.sl.loanlibrary.LoanMonthBean;
 
 import java.util.List;
 
@@ -56,9 +56,15 @@ public class LoanAdapter extends BaseAdapter {
         }else{
             viewHolder.mTextView.setEnabled(true);
         }
-        viewHolder.mTextView.setText(month.toString());
+        viewHolder.mTextView.setText(getMonthDetail(month));
 
         return convertView;
+    }
+
+    private String getMonthDetail(LoanMonthBean bean){
+        return (bean.getDate()==null?"":"日期:" + bean.getDate() )+ " 总第" + String.format("%3d", bean.getMonth()) + "月" + " 该月还款额=" + bean.getRepayment()
+                + "\n所还本金=" + bean.getPayPrincipal() + ", 所还利息=" + bean.getInterest()
+                + "\n剩余贷款=" + bean.getRemainTotal() + ", 剩余总本金=" + bean.getRemainPrincipal();
     }
 
     private class ViewHolder{
