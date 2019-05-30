@@ -1,18 +1,4 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
-
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
 
 
 android {
@@ -58,7 +44,7 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     compile 'com.google.code.gson:gson:2.8.2'
     compile project(path: ':LoanLibrary')
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
-        transitive = true;
-    }
+//    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+//        transitive = true;
+//    }
 }
