@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical">
     <TextView
         android:id="@+id/info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:textSize="16sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold|italic"
-        android:padding="10dp"
+        android:padding="5dp"
         />
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"
+        tools:text="已还款月数信息"
         />
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <com.sl.houseloan.widget.GridProgressView
+        android:id="@+id/gridProgressView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-        />
+        android:layout_height="50dp" />
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

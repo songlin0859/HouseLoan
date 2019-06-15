@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sl.houseloan.adapter.LoanAdapter;
 import com.sl.houseloan.bean.LoanInfo;
 import com.sl.houseloan.util.JsonUtil;
+import com.sl.houseloan.widget.GridProgressView;
 import com.sl.loanlibrary.LoanCalculatorUtil;
 import com.sl.loanlibrary.LoanMonthBean;
 import com.sl.loanlibrary.LoanResult;
@@ -28,8 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     private ListView mListView;
     private List<LoanMonthBean> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
-
-    private ProgressBar mProgressBar;
+    private GridProgressView gridProgressView;
     private TextView mInfoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_result);
         setTitle(getString(R.string.activity_result_title));
 
-        mProgressBar= (ProgressBar) findViewById(R.id.progressBar);
+        gridProgressView= (GridProgressView)findViewById(R.id.gridProgressView);
         mInfoView= (TextView) findViewById(R.id.info);
         String json=getIntent().getStringExtra(EXTRA_JSON);
         if (TextUtils.isEmpty(json)){
@@ -58,7 +58,6 @@ public class ResultActivity extends AppCompatActivity {
         mListView= (ListView) findViewById(R.id.listView);
         mAdapter=new LoanAdapter(mMonthList);
         mListView.setAdapter(mAdapter);
-        mProgressBar.setMax(loanInfo.getTotalLength()*20);
 
         LoanResult loanResult=null;
         if (loanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
@@ -106,8 +105,10 @@ public class ResultActivity extends AppCompatActivity {
                 hasGone++;
             }
         }
-        mProgressBar.setProgress(hasGone);
-        ((TextView)findViewById(R.id.text)).setText("已还款比例(月数)"+hasGone+"/"+ loanInfo.getTotalLength()*12 +"==>百分比"+getPercentString(hasGone,(loanInfo.getTotalLength()*12)));
+
+        gridProgressView.setRowColumnsAndDone(12,loanInfo.getTotalLength(),hasGone);
+
+        ((TextView)findViewById(R.id.text)).setText("已还款月数比例"+hasGone+"/"+ loanInfo.getTotalLength()*12 +"["+getPercentString(hasGone,(loanInfo.getTotalLength()*12))+"]");
 
         mMonthList.addAll(allLoans);
         mAdapter.notifyDataSetChanged();

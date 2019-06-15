@@ -1,5 +1,10 @@
 package com.sl.houseloan.adapter;
 
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,18 +58,27 @@ public class LoanAdapter extends BaseAdapter {
 
         if (month.getDateMills()>0&&month.getDateMills()<System.currentTimeMillis()){
             viewHolder.mTextView.setEnabled(false);
+            viewHolder.mTextView.setText(getMonthDetail(month,false));
         }else{
             viewHolder.mTextView.setEnabled(true);
+            viewHolder.mTextView.setText(getMonthDetail(month,true));
         }
-        viewHolder.mTextView.setText(getMonthDetail(month));
 
         return convertView;
     }
 
-    private String getMonthDetail(LoanMonthBean bean){
-        return (bean.getDate()==null?"":"日期:" + bean.getDate() )+ " 总第" + String.format("%3d", bean.getMonth()) + "月" + " 该月还款额=" + bean.getRepayment()
-                + "\n所还本金=" + bean.getPayPrincipal() + ", 所还利息=" + bean.getInterest()
+    private CharSequence getMonthDetail(LoanMonthBean bean, boolean b){
+        String str=(bean.getDate()==null?"":bean.getDate() )+ " 总第" + String.format("%3d", bean.getMonth()) + "月" + " 还款额=" + bean.getRepayment()
+                + "\n本金=" + bean.getPayPrincipal() + ", 利息=" + bean.getInterest()
                 + "\n剩余贷款=" + bean.getRemainTotal() + ", 剩余总本金=" + bean.getRemainPrincipal();
+        SpannableString ss =new SpannableString(str);
+        RelativeSizeSpan sizeSpan02 = new RelativeSizeSpan(1.2f);
+        ss.setSpan(sizeSpan02,0,str.indexOf("本金"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        if (b){
+            ForegroundColorSpan colorSpan =new ForegroundColorSpan(Color.parseColor("#0099EE"));
+            ss.setSpan(colorSpan,0,str.indexOf("本金"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        return  ss;
     }
 
     private class ViewHolder{
