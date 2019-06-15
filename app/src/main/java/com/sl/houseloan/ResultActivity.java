@@ -83,9 +83,9 @@ public class ResultActivity extends AppCompatActivity {
                 +"\n首月还款: "+loanResult.getFirstRepayment()+"元   月均还款: "+loanResult.getAvgRepayment()+"元"
                 +"\n还款总额: "+loanResult.getTotalRepayment()+"元   每月减少: "+(loanResult.getMonthDec()==null?"0":loanResult.getMonthDec())+"元";
         if (loanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
-            mInfoView.setText("**等额本金**\n"+info);
+            mInfoView.setText("**##等额本金##**\n"+info);
         }else if (loanInfo.getLoanType()== LoanInfo.TYPE_DEBX){
-            mInfoView.setText("**等额本息**\n"+info);
+            mInfoView.setText("**##等额本息##**\n"+info);
         }
 
         mMonthList.clear();

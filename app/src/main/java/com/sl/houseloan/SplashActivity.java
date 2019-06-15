@@ -12,7 +12,6 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 public class SplashActivity extends AppCompatActivity {
-    private ImageView mImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -20,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mImageView= (ImageView) findViewById(R.id.imageView);
+        ImageView mImageView = (ImageView) findViewById(R.id.imageView);
         ActionBar actionBar = getActionBar();
         if (actionBar!=null){
             actionBar.hide();
@@ -34,9 +33,7 @@ public class SplashActivity extends AppCompatActivity {
         animation.setDuration(2500);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
+            public void onAnimationStart(Animation animation) { }
 
             @Override
             public void onAnimationEnd(Animation animation) {
@@ -45,9 +42,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
+            public void onAnimationRepeat(Animation animation) { }
         });
         mImageView.setAnimation(animation);
         animation.start();
