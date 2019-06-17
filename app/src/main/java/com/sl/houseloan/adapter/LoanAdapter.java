@@ -72,9 +72,9 @@ public class LoanAdapter extends BaseAdapter {
                 + "\n本金=" + bean.getPayPrincipal() + ", 利息=" + bean.getInterest()
                 + "\n剩余贷款=" + bean.getRemainTotal() + ", 剩余总本金=" + bean.getRemainPrincipal();
         SpannableString ss =new SpannableString(str);
-        RelativeSizeSpan sizeSpan02 = new RelativeSizeSpan(1.2f);
-        ss.setSpan(sizeSpan02,0,str.indexOf("本金"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         if (b){
+            RelativeSizeSpan sizeSpan02 = new RelativeSizeSpan(1.2f);
+            ss.setSpan(sizeSpan02,0,str.indexOf("本金"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             ForegroundColorSpan colorSpan =new ForegroundColorSpan(Color.parseColor("#0099EE"));
             ss.setSpan(colorSpan,0,str.indexOf("本金"), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }

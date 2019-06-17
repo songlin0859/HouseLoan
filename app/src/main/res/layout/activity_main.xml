@@ -167,8 +167,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:layout_weight="4"
             android:background="@color/colorAccent"
             android:text="@string/activity_main_start"
             android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:enabled="true"
+            android:padding="10dp"
+            android:text=" 详情>" />
+
+        <TextView
+            android:id="@+id/info"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold|italic" />
     </LinearLayout>
 </ScrollView>

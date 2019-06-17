@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends AppCompatActivity implements GridProgressView.OnItemClickListener {
     public static final String EXTRA_JSON = "json";
     private ListView mListView;
     private List<LoanMonthBean> mMonthList=new ArrayList<>();
     private LoanAdapter mAdapter;
     private GridProgressView gridProgressView;
-    private TextView mInfoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,7 @@ public class ResultActivity extends AppCompatActivity {
         setTitle(getString(R.string.activity_result_title));
 
         gridProgressView= (GridProgressView)findViewById(R.id.gridProgressView);
-        mInfoView= (TextView) findViewById(R.id.info);
+        gridProgressView.setOnItemClickListener(this);
         String json=getIntent().getStringExtra(EXTRA_JSON);
         if (TextUtils.isEmpty(json)){
             return;
@@ -77,16 +76,6 @@ public class ResultActivity extends AppCompatActivity {
         if (loanResult==null){
             return ;
         }
-
-        String info="贷款总额: "+loanResult.getTotalLoanMoney()+"元   总利息: "+loanResult.getTotalInterest()+"元"
-                +"\n首月还款: "+loanResult.getFirstRepayment()+"元   月均还款: "+loanResult.getAvgRepayment()+"元"
-                +"\n还款总额: "+loanResult.getTotalRepayment()+"元   每月减少: "+(loanResult.getMonthDec()==null?"0":loanResult.getMonthDec())+"元";
-        if (loanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
-            mInfoView.setText("**##等额本金##**\n"+info);
-        }else if (loanInfo.getLoanType()== LoanInfo.TYPE_DEBX){
-            mInfoView.setText("**##等额本息##**\n"+info);
-        }
-
         mMonthList.clear();
         List<LoanMonthBean> allLoans = loanResult.getAllLoans();
         //添加上月份信息
@@ -129,5 +118,10 @@ public class ResultActivity extends AppCompatActivity {
         Intent intent=new Intent(context,ResultActivity.class);
         intent.putExtra(EXTRA_JSON,json);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(int row, int col) {
+        mListView.setSelection(12*col+row);
     }
 }

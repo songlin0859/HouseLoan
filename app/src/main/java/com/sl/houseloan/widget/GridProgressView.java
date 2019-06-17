@@ -24,12 +24,12 @@ public class GridProgressView extends View {
     private static final int ROWS = 12;
     private static final int COLUMNS = 30;
     private int mLineWidth;
-    private int rowNum=ROWS;
-    private  int columnNum=COLUMNS;
+    private int rowNum = ROWS;
+    private int columnNum = COLUMNS;
     private Paint mPaint;
     private int startColor = Color.parseColor("#FB7EA9");
     private int endColor = Color.parseColor("#309F4A");
-    private int doneNum=0;
+    private int doneNum = 0;
 
     public GridProgressView(Context context) {
         this(context, null);
@@ -77,7 +77,8 @@ public class GridProgressView extends View {
         setMeasuredDimension(width, height);
     }
 
-    private int gray=Color.parseColor("#EAEAEA");
+    private int gray = Color.parseColor("#EAEAEA");
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -89,10 +90,10 @@ public class GridProgressView extends View {
 
         for (int j = 0; j < columnNum; j++) {
             for (int i = 0; i < rowNum; i++) {
-                int index=i + j * 12;
-                if (index<doneNum){
+                int index = i + j * 12;
+                if (index < doneNum) {
                     mPaint.setColor(gray);
-                }else {
+                } else {
                     mPaint.setColor(evaluate(index * 1.0f / (rowNum * columnNum), startColor, endColor));
                 }
 
@@ -107,29 +108,30 @@ public class GridProgressView extends View {
 
     private float pointX;
     private float pointY;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                pointX=event.getX();
-                pointY=event.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                float x = event.getX();
-                float y = event.getY();
-
-                ViewConfiguration configuration=ViewConfiguration.get(getContext());
-                int touchSlop = configuration.getScaledTouchSlop();
-
-                if (Math.sqrt((x-pointX)*(x-pointX)+(y-pointY)*(y-pointY))<touchSlop){
-                    getCellPosition(x,y);
-                }
-
-                break;
-            default:
-                break;
+        if (onItemClickListener != null) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    pointX = event.getX();
+                    pointY = event.getY();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    float x = event.getX();
+                    float y = event.getY();
+                    ViewConfiguration configuration = ViewConfiguration.get(getContext());
+                    int touchSlop = configuration.getScaledTouchSlop();
+                    if (Math.sqrt((x - pointX) * (x - pointX) + (y - pointY) * (y - pointY)) < touchSlop) {
+                        getCellPosition(x, y);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     private void getCellPosition(float x, float y) {
@@ -140,13 +142,13 @@ public class GridProgressView extends View {
         float itemWidth = ((width - (columnNum - 1) * mLineWidth) * 1.0f / columnNum);
 
 
-        int row=-1;
-        int col=-1;
+        int row = -1;
+        int col = -1;
         for (int j = 0; j < columnNum; j++) {
             float left = j * itemWidth + j * mLineWidth;
             float right = left + itemWidth;
-            if (x>=left && x<=right){
-                col=j;
+            if (x >= left && x <= right) {
+                col = j;
                 break;
             }
         }
@@ -154,13 +156,15 @@ public class GridProgressView extends View {
         for (int i = 0; i < rowNum; i++) {
             float top = i * itemHeight + i * mLineWidth;
             float bottom = top + itemHeight;
-            if (y>=top && y<=bottom){
-                row=i;
+            if (y >= top && y <= bottom) {
+                row = i;
             }
         }
 
-        if (col>0 && row>0){
-            Toast.makeText(getContext(),"col:"+col+",row"+row,Toast.LENGTH_SHORT).show();
+        if (col > 0 && row > 0) {
+            if (onItemClickListener!=null){
+                onItemClickListener.onItemClick(row,col);
+            }
         }
 
     }
@@ -188,10 +192,20 @@ public class GridProgressView extends View {
     }
 
 
-    public void setRowColumnsAndDone(int rows,int columns,int done){
-        rowNum=rows;
-        columnNum=columns;
-        doneNum=done;
+    public void setRowColumnsAndDone(int rows, int columns, int done) {
+        rowNum = rows;
+        columnNum = columns;
+        doneNum = done;
         invalidate();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int row, int col);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

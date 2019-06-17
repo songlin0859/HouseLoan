@@ -19,7 +19,11 @@ import com.sl.houseloan.bean.LoanInfo;
 import com.sl.houseloan.util.JsonUtil;
 import com.sl.houseloan.util.MoneyConvertor;
 import com.sl.houseloan.util.SpUtil;
+import com.sl.loanlibrary.LoanCalculatorUtil;
+import com.sl.loanlibrary.LoanResult;
+import com.sl.loanlibrary.RateType;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mDateChoose;
     private RadioGroup mRadioGroup;
     private TextView mMoneyInfo;
+
+    private TextView mInfoView;
 
     private Calendar mCalendar;
     private LoanInfo mLoanInfo;
@@ -89,8 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDateChoose= (Button) findViewById(R.id.firstPayDay);
         mRadioGroup= (RadioGroup) findViewById(R.id.radioGroup);
         mMoneyInfo= (TextView) findViewById(R.id.moneyInfo);
+        mInfoView= (TextView) findViewById(R.id.info);
+
         mMoneyInfo.setVisibility(View.GONE);
 
+        findViewById(R.id.detail).setOnClickListener(this);
         mStart.setOnClickListener(this);
         mDateChoose.setOnClickListener(this);
         mRadioGroup.setOnCheckedChangeListener(this);
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v==mStart){
+        if (v.getId()==R.id.detail){
             if (checkData()){
                 mLoanInfo.setTotalMoney(getDoubleValue(mTotalMoney));
                 mLoanInfo.setTotalLength(getIntValue(mTotalTime));
@@ -146,6 +155,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             },mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH),mCalendar.get(Calendar.DAY_OF_MONTH));
             dialog.show();
+        }else if (v==mStart){
+            if (checkData()){
+                LoanResult loanResult=null;
+                if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
+                    loanResult = LoanCalculatorUtil.calculatorAC(
+                            new BigDecimal(mLoanInfo.getTotalMoney()),
+                            mLoanInfo.getTotalLength()*12,
+                            mLoanInfo.getRate()* mLoanInfo.getRateDiscount(),
+                            RateType.RATE_TYPE_YEAR);
+                }else if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBX){
+                    loanResult = LoanCalculatorUtil.calculatorACPI(
+                            new BigDecimal(mLoanInfo.getTotalMoney()),
+                            mLoanInfo.getTotalLength()*12,
+                            mLoanInfo.getRate()* mLoanInfo.getRateDiscount(),
+                            RateType.RATE_TYPE_YEAR);
+                }
+
+                if (loanResult==null){
+                    return ;
+                }
+
+                String info="贷款总额: "+loanResult.getTotalLoanMoney()+"元   总利息: "+loanResult.getTotalInterest()+"元"
+                        +"\n首月还款: "+loanResult.getFirstRepayment()+"元   月均还款: "+loanResult.getAvgRepayment()+"元"
+                        +"\n还款总额: "+loanResult.getTotalRepayment()+"元   每月减少: "+(loanResult.getMonthDec()==null?"0":loanResult.getMonthDec())+"元";
+                if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
+                    mInfoView.setText("**##等额本金##**\n"+info);
+                }else if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBX){
+                    mInfoView.setText("**##等额本息##**\n"+info);
+                }
+            }
         }
     }
 

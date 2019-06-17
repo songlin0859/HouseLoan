@@ -7,15 +7,6 @@
     android:paddingRight="10dp"
     android:orientation="vertical">
     <TextView
-        android:id="@+id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold|italic"
-        android:padding="5dp"
-        />
-    <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
