@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         final AlphaAnimation animation = new AlphaAnimation(0.3f, 1.0f);
-        animation.setDuration(2500);
+        animation.setDuration(1500);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) { }

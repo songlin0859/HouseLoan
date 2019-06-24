@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_me"
+            android:icon="@mipmap/seat"
+            android:title="我" />
+    </group>
+    <group
+        android:id="@+id/group_settings"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_setting"
+            android:title="设置" />
+        <item
+            android:id="@+id/nav_suggestion"
+            android:title="意见反馈" />
+        <item
+            android:id="@+id/nav_about"
+            android:title="关于" />
+    </group>
+</menu>

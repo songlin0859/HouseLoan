@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.sl.houseloan">
+    package="com.sl.houseloan">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -10,18 +12,26 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:windowSoftInputMode="stateHidden">
-        </activity>
-        <activity android:name=".ResultActivity">
-        </activity>
+        <activity
+            android:name=".ConfigActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ResultActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="457774bbaa24ccbdc9400ec23d15140cb8f3ab2f" />
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WebViewActivity"></activity>
     </application>
+
 </manifest>

@@ -20,4 +20,8 @@
     <string name="activity_main_input_rate_toast">请输入贷款利率</string>
     <string name="activity_main_input_rate_discount_toast">请输入利率倍率</string>
     <string name="activity_result_title">还款列表</string>
+    <string name="drawer_open">open</string>
+    <string name="drawer_close">close</string>
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>
