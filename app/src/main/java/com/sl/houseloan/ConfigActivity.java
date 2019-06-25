@@ -158,6 +158,13 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
         }else if (v==mStart){
             if (checkData()){
                 LoanResult loanResult=null;
+
+                mLoanInfo.setTotalMoney(getDoubleValue(mTotalMoney));
+                mLoanInfo.setTotalLength(getIntValue(mTotalTime));
+                mLoanInfo.setRate(getDoubleValue(mRate));
+                mLoanInfo.setRateDiscount(getDoubleValue(mRateDiscount));
+                SpUtil.saveLoanInfo(mLoanInfo);
+
                 if (mLoanInfo.getLoanType()== LoanInfo.TYPE_DEBJ){
                     loanResult = LoanCalculatorUtil.calculatorAC(
                             new BigDecimal(mLoanInfo.getTotalMoney()),
