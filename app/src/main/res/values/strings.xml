@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">月供清单</string>
+    <string name="app_name">房贷计算器</string>
     <string name="activity_slpash_copyright">阿菜©csl</string>
     <string name="activity_main_total_money">贷款总额:</string>
     <string name="activity_main_hint_input_money">输入金额(元)</string>
@@ -20,8 +20,6 @@
     <string name="activity_main_input_rate_toast">请输入贷款利率</string>
     <string name="activity_main_input_rate_discount_toast">请输入利率倍率</string>
     <string name="activity_result_title">还款列表</string>
-    <string name="drawer_open">open</string>
-    <string name="drawer_close">close</string>
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
 </resources>
